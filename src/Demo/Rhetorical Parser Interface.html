@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html><head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>Rhetorical Parser Interface</title>
+
+		<link href="Rhetorical%20Parser%20Interface_files/interactive_tree.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="Rhetorical%20Parser%20Interface_files/d3.js"></script><style type="text/css">embed[height="175"][width="175"], embed[height="200"][width="100%"], embed[height="200"][width="175"], embed[height="233"][width="280"], embed[height="250"][width="175"], embed[width="100%"][height="100"], embed[width="1000"][height="150"], embed[width="120"][height="240"], embed[width="120"][height="600"], embed[width="160"][height="600"], embed[width="180"][height="300"], embed[width="180"][height="530"], embed[width="200"][height="230"], embed[width="200"][height="250"], embed[width="200"][height="300"], embed[width="200"][height="400"], embed[width="200"][height="500"], embed[width="210"][height="270"], embed[width="212"][height="300"], embed[width="215"][height="359"], embed[width="220"][height="250"], embed[width="240"][height="150"], embed[width="240"][height="250"], embed[width="240"][height="300"], embed[width="240"][height="400"], embed[width="240"][height="420"], embed[width="250"][height="250"], embed[width="300"][height="250"], embed[width="310"][height="70"], embed[width="430"][height="120"], embed[width="460"][height="70"], embed[width="468"][height="60"], embed[width="470"][height="50"], embed[width="500"][height="100"], embed[width="500"][height="120"], embed[width="500"][height="170"], embed[width="570"][height="100"], embed[width="600"][height="160"], embed[width="600"][height="200"], embed[width="600"][height="90"], embed[width="680"][height="130"], embed[width="700"][height="60"], embed[width="728"][height="90"], embed[width="940"][height="90"], embed[width="960"][height="120"], iframe[width="104"][height="464"], iframe[width="200"][height="240"], iframe[width="200"][height="300"], iframe[width="210"][height="237"], iframe[width="240"][height="350"] { display: none!important; }
+iframe[width="468"][height="60"], iframe[width="600"][height="90"], iframe[width="780"][height="120"], iframe[width="980"][height="90"], img[width="460"][height="60"], img[width="600"][height="90"], img[width="720"][height="90"], object[height="100"][width="550"], object[height="120"][width="120"], object[height="175"][width="175"], object[height="200"][width="100%"], object[height="250"][width="175"], object[height="380"][width="190"], object[height="80"][width="100%"], object[height="97"][width="500"], object[width="100%"][height="150"], object[width="100%"][height="250"], object[width="100%"][height="60"], object[width="100%"][height="90"], object[width="1000"][height="100"], object[width="1000"][height="150"], object[width="1000"][height="200"], object[width="1000"][height="300"], object[width="1000"][height="70"], object[width="1000"][height="90"], object[width="1020"][height="200"], object[width="1020"][height="220"], object[width="1024"][height="150"], object[width="1024"][height="80"], object[width="120"][height="300"], object[width="120"][height="60"], object[width="120"][height="600"], object[width="140"][height="320"], object[width="140"][height="600"], object[width="1440"][height="299"], object[width="150"][height="150"], object[width="150"][height="250"], object[width="150"][height="300"], object[width="150"][height="360"], object[width="160"][height="200"], object[width="160"][height="400"], object[width="160"][height="600"], object[width="161"][height="250"], object[width="170"][height="170"], object[width="170"][height="80"], object[width="175"][height="200"], object[width="175"][height="220"], object[width="180"][height="107"], object[width="180"][height="235"], object[width="180"][height="250"] { display: none!important; }
+object[width="180"][height="300"], object[width="180"][height="540"], object[width="185"][height="228"], object[width="188"][height="290"], object[width="190"][height="310"], object[width="190"][height="46"], object[width="190"][height="700"], object[width="200"][height="100"], object[width="200"][height="150"], object[width="200"][height="220"], object[width="200"][height="300"], object[width="200"][height="352"], object[width="200"][height="360"], object[width="200"][height="400"], object[width="210"][height="300"], object[width="215"][height="400"], object[width="220"][height="160"], object[width="220"][height="320"], object[width="224"][height="373"], object[width="229"][height="229"], object[width="230"][height="100"], object[width="230"][height="60"], object[width="234"][height="60"], object[width="240"][height="100"], object[width="240"][height="120"], object[width="240"][height="200"], object[width="240"][height="240"], object[width="240"][height="300"], object[width="240"][height="325"], object[width="240"][height="350"], object[width="240"][height="400"], object[width="240"][height="800"], object[width="250"][height="125"], object[width="250"][height="250"], object[width="250"][height="500"], object[width="250"][height="520"], object[width="250"][height="60"], object[width="256"][height="300"], object[width="260"][height="450"], object[width="265"][height="300"], object[width="270"][height="540"], object[width="275"][height="138"], object[width="280"][height="90"], object[width="300"][height="250"], object[width="300"][height="276"], object[width="300"][height="78"], object[width="340"][height="170"], object[width="340"][height="585"], object[width="340"][height="80"], object[width="350"][height="115"] { display: none!important; }
+object[width="350"][height="170"], object[width="360"][height="120"], object[width="360"][height="60"], object[width="370"][height="170"], object[width="400"][height="50"], object[width="400"][height="87"], object[width="408"][height="275"], object[width="440"][height="100"], object[width="460"][height="40"], object[width="468"][height="40"], object[width="468"][height="60"], object[width="468"][height="90"], object[width="469"][height="70"], object[width="470"][height="50"], object[width="480"][height="100"], object[width="480"][height="60"], object[width="500"][height="100"], object[width="500"][height="200"], object[width="500"][height="250"], object[width="500"][height="78"], object[width="530"][height="170"], object[width="545"][height="70"], object[width="550"][height="130"], object[width="550"][height="200"], object[width="560"][height="120"], object[width="570"][height="180"], object[width="572"][height="106"], object[width="580"][height="80"], object[width="590"][height="100"], object[width="600"][height="130"], object[width="600"][height="200"], object[width="600"][height="250"], object[width="600"][height="80"], object[width="600"][height="90"], object[width="610"][height="130"], object[width="620"][height="120"], object[width="626"][height="75"], object[width="630"][height="206"], object[width="635"][height="185"], object[width="675"][height="80"], object[width="680"][height="125"], object[width="680"][height="240"], object[width="680"][height="90"], object[width="690"][height="85"], object[width="700"][height="100"], object[width="700"][height="87"], object[width="700"][height="90"], object[width="703"][height="120"], object[width="720"][height="120"], object[width="720"][height="60"] { display: none!important; }
+object[width="720"][height="90"], object[width="728"][height="90"], object[width="738"][height="90"], object[width="750"][height="100"], object[width="758"][height="93"], object[width="760"][height="90"], object[width="770"][height="100"], object[width="800"][height="128"], object[width="800"][height="200"], object[width="800"][height="90"], object[width="850"][height="100"], object[width="850"][height="83"], object[width="880"][height="80"], object[width="900"][height="100"], object[width="900"][height="150"], object[width="900"][height="68"], object[width="900"][height="90"], object[width="940"][height="120"], object[width="950"][height="150"], object[width="950"][height="90"], object[width="951"][height="90"], object[width="980"][height="100"], object[width="980"][height="250"], object[width="982"][height="150"], object[width="990"][height="206"], #__BULLETIN__bdiv[style="position"], .ad_w300i, .ad-300, .commercial-unit-mobile-bottom, .mobile-instream-ad-holder-single, #ad_wp_base, #adxtop, #ad_728h, #ad_336_singlebt, .tjads, topadblock, #ad-fullbanner2-billboard-outer, .loop_google_ad, .amp_ad_wrapper, .commercial-unit-mobile-top, div[id*="ScriptRootN"], .b_ad, .ad-engage, #gads_middle, .add_300x250, .ContentAd, .puFloatLine > #puFloatDiv, .td-a-rec, a[href*=".ufinkln.com/"], body > #overover[style="position:fixed;width:100%;height:100%;background:silver;z-index: 2;opacity: 0.1;"] { display: none!important; }
+body >
+</style>
+		
+		<script type="text/javascript" src="Rhetorical%20Parser%20Interface_files/d3_002.js"></script>
+		<script src="Rhetorical%20Parser%20Interface_files/jquery.js"></script>
+	</head>
+
+	<body>
+		<h1>Tree</h1>
+		Select file to read <input type="file" onchange="loadFile(this)">
+        <pre id="data"></pre>
+		<h1>Topic class Tree</h1>
+		Select file to read <input type="file" onchange="loadFile_topics(this)">
+        <pre id="data_topics"></pre>
+		<table>
+			<tr>
+				<td><div id="chart"></div></td>
+				<td><div id="content"></div></td>
+			</tr>
+		</table>
+		
+	<script type="text/javascript">
+		
+			//////////////////////////////////////////////////
+			/* This function is activated when (input is entered and) the Create Tree button is clicked: 
+			it parses the json-format string created into an object which is used to make the tree */
+			var index = 0;
+			var searchterm = "";
+			var nucleus_selected = 0;
+			var satellite_selected = 1;
+			var nodenum = -1;
+			var currentjsonstring; 
+			var scrollison = 0;
+			rhetoricParsingOutput="";
+			json_processed="";
+			
+			function loadFile(o)
+                {
+                    var fr = new FileReader();
+                    fr.onload = function(e)
+                        {
+                            showDataFile(e, o);
+                        };
+                    fr.readAsText(o.files[0]);
+                }
+
+                function showDataFile(e, o)
+                {
+                    document.getElementById("data").innerText = e.target.result;
+					rhetoricParsingOutput = e.target.result;
+					addtext();
+                }
+			
+		 	//Topics functions
+		 	function loadFile_topics(o)
+			{
+				var fr = new FileReader();
+				fr.onload = function(e)
+					{
+						showDataFile_topics(e, o);
+					};
+				fr.readAsText(o.files[0]);
+			}
+
+			function showDataFile_topics(e, o)
+			{
+				document.getElementById("data_topics").innerText = e.target.result;
+				json_processed = e.target.result;
+				addtext_json();
+			}
+			
+			//Original functions
+			function help(){
+				alert(" The width in pixels can be changed by entering a value and clicking Change Width of Tree (px) (a few thousand is a good number). Likewise for the height.f you want to highlight nodes that contain a certain text, or are of a certain relation type, type the text or relation type into the rightmost text area and click the \"Search\" button.To un-highlight all nodes, clear the search box (i.e. the rightmost text area) and uncheck both checkboxes. By hovering the mouse over nodes in the tree, you can access the text on which they are based. The text will display inside a tooltip. Beside the tree, a summary is shown of the text on which the tree is based. The summary can be set to scroll to the most recently clicked node. 		The summary shows, with a solid border, which node was most recently clicked. Its ancestors, right down to the root, appear with a dotted border.");
+			}
+			function scrollon()
+			{
+				scrollison = 1;
+				document.getElementById("scrolloffradio").checked=false;
+			}
+			
+			function scrolloff()
+			{
+				scrollison = 0;
+				document.getElementById("scrollonradio").checked=false;
+			}
+			
+			function addtext() 
+			{
+				var tempinputstring = rhetoricParsingOutput;
+				var tempjsonstring = make_JSON_string(tempinputstring);
+				currentjsonstring = tempjsonstring;
+				var tempjson = JSON.parse(tempjsonstring);
+				make_tree(tempjson);
+				index=0;
+				da=parseNodes(JSON.parse('['+tempjsonstring+']'));	
+				if (document.getElementById("content").hasChildNodes())
+				{
+				document.getElementById("content").removeChild(document.getElementById("content").childNodes[0]);	
+				}
+				document.getElementById("content").appendChild(da);	
+				document.getElementById("content").scrollTop = 0;
+				$(removeborder(nodenum + 1));
+			}
+
+			function addtext_json() 
+			{
+				//var tempinputstring = rhetoricParsingOutput;
+				//var tempjsonstring = make_JSON_string(tempinputstring);
+				currentjsonstring = json_processed;
+				var tempjson = JSON.parse(json_processed);
+				make_tree(tempjson);
+				index=0;
+				da=parseNodes(JSON.parse('['+json_processed+']'));	
+				if (document.getElementById("content").hasChildNodes())
+				{
+				document.getElementById("content").removeChild(document.getElementById("content").childNodes[0]);	
+				}
+				document.getElementById("content").appendChild(da);	
+				document.getElementById("content").scrollTop = 0;
+				$(removeborder(nodenum + 1));
+			}
+			
+			function refreshtext()
+			{
+				var tempjson = JSON.parse(currentjsonstring);
+				make_tree(tempjson);
+				index=0;
+				da=parseNodes(JSON.parse('['+currentjsonstring+']'));	
+				if (document.getElementById("content").hasChildNodes())
+				{
+				document.getElementById("content").removeChild(document.getElementById("content").childNodes[0]);	
+				}
+				document.getElementById("content").appendChild(da);	
+
+			}
+
+			// This function is called to start the recursive read function off on the provided input, and feed the json string back to addtext 
+			function make_JSON_string(inputstring) 
+			{
+				var jsonstringoutput = "";
+				var remaining_input = inputstring.trim();
+				nodenum = -1;
+				jsonstringoutput += recursiveread(remaining_input);
+				return jsonstringoutput;
+			}
+			
+			// This function creates a tree-structured json-format string from the output of the rhetorical parser 
+			function recursiveread(inputstring) 
+			{
+				nodenum += 1;
+				var output = "\n{";
+
+				//Determine the types of the parent 
+				var spanloc = inputstring.indexOf("span");
+				var leafloc = inputstring.indexOf("leaf");
+				//This type determines if it's a root or not 
+				var type;
+				//This type (type2) determines if it's a span or a leaf 
+				var type2;
+				if ((spanloc != -1) && ((spanloc < leafloc) || (leafloc == -1))) 
+				{
+					type = inputstring.substring(1, spanloc - 1);
+
+					type = type.trim();
+					type2 = "span"; 
+
+				}
+				else if ((leafloc != -1) && ((spanloc > leafloc) || (spanloc == -1)))
+				{
+					type = inputstring.substring(1, leafloc - 1);
+					type = type.trim();
+					type2 = "leaf";
+
+				}
+
+				//Use parent type to determine what to do next 
+				if (type == "Root")
+				{
+
+					//Add name and 1 bracket of metatext to output 
+					var txt = inputstring.substring(inputstring.indexOf(type), inputstring.indexOf(")") + 1);
+					output += "\n\"name\" : \"" + nodenum + "ENDNODENUM" + txt + "\"";
+					output += ",\n\"children\" : \n[";
+					
+					//Call recursively on children 
+					//Set initial current location to just after root metatext 
+					var currentloc = inputstring.indexOf(")") + 1;
+					var parentcloseloc = find_closed_bracket(inputstring);
+					
+					//Find appropriate initial open location 
+					var childopenloc = (inputstring.substring(currentloc, parentcloseloc + 1)).indexOf("(") + currentloc;
+					var done = 0;
+					var count = 0;
+					//TODO: take into account quoted brackets? 
+					while (done != 1)
+					{
+
+						//Find and set childcloseloc 
+						var childcloseloc = find_closed_bracket(inputstring.substring(childopenloc, parentcloseloc + 1)) + childopenloc;
+						// Recursive call
+						var childjsondata = recursiveread(inputstring.substring(childopenloc, childcloseloc + 1));
+						if (count > 0) 
+						{
+							output += ",";
+						}
+						output += childjsondata;
+
+						//Set new currentloc to the location just after the closed bracket of the current child 
+						currentloc = childcloseloc + 1;
+						// Check if there are no more children of the parent 
+						if (((inputstring.substring(currentloc, parentcloseloc + 1)).indexOf("(")) == -1) 
+						{
+							done = 1;
+						}
+						else
+						{
+							//Set new childopenloc to the location of the next open bracket between the end of the current child's bracket and the end of the root's bracket
+							childopenloc = (inputstring.substring(currentloc, parentcloseloc + 1)).indexOf("(") + currentloc;
+						}
+
+						count++;
+					}
+					
+					output += "\n]";
+					
+				}
+				else if ((type == "Satellite") || (type == "Nucleus") || (type == "DUMMY"))
+				{
+
+					//Read name and 2 brackets of metatext to output (don't close quotation mark on name field yet - more text is to be added)
+					
+					//Decide what to do next on the basis of 2nd level type
+					if (type2 == "leaf")
+					{
+						var txt = inputstring.substring(inputstring.indexOf(type), (inputstring.substring(inputstring.indexOf(")") + 1, inputstring.length)).indexOf(")") + 2 + inputstring.indexOf(")"));
+						output += "\n\"name\" : \"" + nodenum + "ENDNODENUM" + txt;
+
+						var contained_text_startloc = inputstring.indexOf("text _!") + 7;
+						var contained_text_endloc = (inputstring.substring(contained_text_startloc, inputstring.length)).indexOf("_!") + contained_text_startloc;
+						var contained_text = inputstring.substring(contained_text_startloc, contained_text_endloc);
+						//Close quotation mark on name field
+
+						var text_to_be_added = " | Text: " + contained_text + " \"";
+						output += text_to_be_added;
+					}
+					else if (type2 == "span")
+					{
+						//Read name and 2 brackets of metatext to output 
+						var txt = inputstring.substring(inputstring.indexOf(type), (inputstring.substring(inputstring.indexOf(")") + 1, inputstring.length)).indexOf(")") + 2 + inputstring.indexOf(")"));
+						output += "\n\"name\" : \"" + nodenum + "ENDNODENUM" + txt + "\"";
+						output += ",\n\"children\" : \n[";
+						
+						//Call recursively on children 
+						//Set initial current location to just after 2nd bracket of metatext 
+						var currentloc = (inputstring.substring(inputstring.indexOf(")") + 1, inputstring.length)).indexOf(")") + 1 + inputstring.indexOf(")");
+
+						var parentcloseloc = find_closed_bracket(inputstring);
+						
+						//Find appropriate initial open location 
+						var childopenloc = (inputstring.substring(currentloc, parentcloseloc + 1)).indexOf("(") + currentloc;
+						//TODO: take into account quoted brackets? 
+						var done = 0;
+						var count = 0;
+						while (done != 1)
+						{
+							//Find and set childcloseloc 
+							var childcloseloc = find_closed_bracket(inputstring.substring(childopenloc, parentcloseloc + 1)) + childopenloc;
+
+							// Recursive call 
+							var childjsondata = recursiveread(inputstring.substring(childopenloc, childcloseloc + 1));
+							if (count > 0) 
+							{
+								output += ",";
+							}
+							output += childjsondata;
+
+							//Set new currentloc to the location just after the closed bracket of the current child 
+							currentloc = childcloseloc + 1;
+							// Check if there are no more children of the parent 
+							if (((inputstring.substring(currentloc, parentcloseloc + 1)).indexOf("(")) == -1) 
+							{
+								done = 1;
+							}
+							else
+							{
+								//Set new childopenloc to the location of the next open bracket between the end of the current child's bracket and the end of the root's bracket 
+								childopenloc = (inputstring.substring(currentloc, parentcloseloc + 1)).indexOf("(") + currentloc;
+							}
+
+							count++;
+						}
+						
+						output += "\n]";
+
+					}
+					
+				}
+				
+				output += "\n}";
+				return output;
+			}
+			
+			// This function returns the index of the closed-bracket that matches (i.e. closes) the first open-bracket found in the input
+			// TODO: make function work with quoted brackets?
+			function find_closed_bracket(input) 
+			{
+				// The number of open brackets not closed currently
+				bracket_count = 0;
+				// The location of the closed bracket of the first open bracket in the input, within the remaining input
+				location_of_closed = 0;
+				/* The amount of input discarded so far. Also, the value that needs to be added to any value that refers to a
+				 position within the remaining input, in order to obtain a position within the total input. */
+				var current_base_index = 0;
+				// The amount of input left to be considered
+				var remaining_input = input;
+				// This var is set to 1 to signal that no closed bracket has been found for the first open bracket in the input
+				var errorboolean = 0;
+				/* This var is set to 1 to signal that the first open bracket in the input has been found; 
+				 after this, the while loop will search for the matching closed bracket */
+				var first_open_bracket_found = 0;
+
+				while (true) 
+				{
+					var nextopen = remaining_input.indexOf("(");
+					var nextclosed = remaining_input.indexOf(")");
+					// If the next bracket is an open bracket: 
+					if ((nextopen < nextclosed) && (nextopen != -1) && (nextclosed != -1)) 
+					{
+						first_open_bracket_found = 1;
+						bracket_count++;
+						remaining_input = remaining_input.substring(nextopen + 1, remaining_input.length);
+						current_base_index += nextopen + 1;
+					} 
+					// If the next bracket is a closed bracket or there is no open bracket: 
+					else if (((nextopen > nextclosed) || (nextopen == -1)) && (nextclosed != -1)) 
+					{
+						// If we're in the active portion of the search for a closed bracket, because we've found the first open bracket: 
+						if (first_open_bracket_found) 
+						{
+							bracket_count--;
+							// If we've found the closed bracket that matches the first open bracket in the input: 
+							if (bracket_count == 0) 
+							{
+								location_of_closed = nextclosed;
+								break;
+							} 
+							// If we haven't found the result, we keep looking: 
+							else 
+							{
+								remaining_input = remaining_input.substring(nextclosed + 1, remaining_input.length);
+								current_base_index += nextclosed + 1;
+							}
+						} 
+						// If we haven't yet found the first open bracket: 
+						else 
+						{
+							remaining_input = remaining_input.substring(nextclosed + 1, remaining_input.length);
+							current_base_index += nextclosed + 1;
+						}
+
+					} 
+					else if (nextclosed == -1) 
+					{
+						errorboolean = 1;
+						break;
+					}
+				}
+
+				if (errorboolean == 0)
+					return (location_of_closed + current_base_index);
+				else
+					return "BADFORMATERROR";
+			}
+			
+			//////////////////////////////////////////////////
+
+			var w = 700, h = 1000, i = 0, duration = 500, root;
+			var tree = d3.layout.tree().size([h, w - 160]);
+			
+			var diagonal = d3.svg.diagonal().projection(function(d) {
+				return [d.y, d.x];
+			});
+
+			var vis = d3.select("#chart").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,0)");
+
+			//////////////////////////////////////////////////
+			// If a change in width is signalled: 
+			function changewidth() 
+			{
+				// Get the value 
+				var newwidth = document.inputarea.widthtext.value;
+				// Set the new width to the value 
+				w = newwidth;
+				// Reset the tree dimensions 
+				tree = d3.layout.tree().size([h, w - 160]);
+				// Remove the old tree 
+				d3.select("svg").remove();
+				// Append the new tree 
+				vis = d3.select("#chart").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,0)");
+				
+				refreshtext();
+			}
+			
+			// If a change in height is signalled: 
+			function changeheight() 
+			{
+				// Get the value 
+				var newheight = document.inputarea.heighttext.value;
+				// Set the new height to the value 
+				h = newheight;
+				// Reset the tree dimensions
+				tree = d3.layout.tree().size([h, w - 160]);
+				// Remove the old tree 
+				d3.select("svg").remove();
+				// Append the new tree 
+				vis = d3.select("#chart").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,0)");
+				
+				refreshtext();
+			}
+			
+			// To search for a term: 
+			function search() 
+			{
+				// Set the search term
+				searchterm = document.inputarea.searchtext.value;
+				// Refresh the tree 
+				tree = d3.layout.tree().size([h, w - 160]);
+				// Remove the old tree 
+				d3.select("svg").remove();
+				// Append the new tree 
+				vis = d3.select("#chart").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,0)");
+				
+				refreshtext(); 
+			}
+			
+			// To search for satellites: 
+			function satellite()
+			{
+				if (satellite_selected == 1) satellite_selected = 0;
+				else satellite_selected = 1;
+				// Refresh the tree 
+				tree = d3.layout.tree().size([h, w - 160]);
+				// Remove the old tree 
+				d3.select("svg").remove();
+				// Append the new tree 
+				vis = d3.select("#chart").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,0)");
+				
+				refreshtext(); 
+			}
+			
+			// To search for nuclei: 
+			function nucleus()
+			{
+				if (nucleus_selected == 1) nucleus_selected = 0;
+				else nucleus_selected = 1;
+				// Refresh the tree 
+				tree = d3.layout.tree().size([h, w - 160]);
+				// Remove the old tree 
+				d3.select("svg").remove();
+				// Append the new tree 
+				vis = d3.select("#chart").append("svg:svg").attr("width", w).attr("height", h).append("svg:g").attr("transform", "translate(40,0)");
+				
+				refreshtext(); 
+			}
+			
+			//////////////////////////////////////////////////
+			
+			function make_tree(json) {
+				json.x0 = 800;
+				json.y0 = 0;
+				update( root = json);
+			}
+
+			function update(source) {
+
+				// Compute the new tree layout.
+				var nodes = tree.nodes(root).reverse();
+				// console.log(nodes)
+				// Update the nodes…
+				var node = vis.selectAll("g.node").data(nodes, function(d) {
+					return d.id || (d.id = ++i);
+				});
+
+				var nodeEnter = node.enter().append("svg:g").attr("class", "node").attr("transform", function(d) {
+					return "translate(" + source.y0 + "," + source.x0 + ")";
+				});
+				//.style("opacity", 1e-6);
+
+				// Enter any new nodes at the parent's previous position.
+
+				nodeEnter.append("svg:circle")
+				//.attr("class", "node")
+				//.attr("cx", function(d) { return source.x0; })
+				//.attr("cy", function(d) { return source.y0; })
+				.attr("r", 4.5).style("fill", function(d) {
+					return d._children ? "lightsteelblue" : "#fff";
+				}).on("click", click).append("title").text(function(d) {
+					// Uncomment to make tooltip only show text in case of leaf
+					/*if (d.name.indexOf("| Text: ") != -1) {return d.name.substring(d.name.indexOf("| Text: ") + 1, d.name.length);}
+					else {*/
+						return d.name.substring(d.name.indexOf("ENDNODENUM")+10,d.name.length);
+						/*}*/
+				});
+				
+				//Text addition of color and topic numbers
+				nodeEnter.append('text')
+				.attr('dx', function(d){return -25})
+				.attr('fill','red')
+				.text(function(d){
+				if (d.name.indexOf("| Text: ") != -1  && d.name.indexOf("| Topic: ") != -1) {return " "+d.name.substring(d.name.indexOf("| Topic: ") + 8, d.name.length >20? d.name.indexOf("| Topic: ") + 25: d.name.length);}
+				});
+
+ 
+				// Comment out block to remove text next to nodes
+				nodeEnter.append("svg:text").attr("x", function(d) {
+					return d._children ? -8 : 8;
+				}).attr("y", 3)
+				//.attr("fill","#ccc")
+				//.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+				.text(function(d) {
+						if(d.children) {						
+							relation="";							
+							for(j=0;j<d.children.length;j++){
+								if(d.children[j].name.indexOf("rel2par ")>0){
+									tempStr=d.children[j].name.substring(d.children[j].name.indexOf("rel2par ")+8,d.children[j].name.length);
+									//alert(tempStr); 									
+									if(tempStr.indexOf("span")<0)
+										relation=tempStr.substring(0,tempStr.indexOf(")"))+" ";																	
+									//alert(relation+""+ d.children[j].name);
+								}
+							}
+							
+						//alert("Done"+ d.name+", "+relation);	
+							if(relation=="") alert("No relation found for"+d.name);
+							else return relation;
+						}
+					if (d.name.indexOf("| Text: ") != -1) {return " "+d.name.substring(d.name.indexOf("| Text: ") + 7, d.name.length >20? d.name.indexOf("| Text: ") + 25: d.name.length)+"...";}
+					else{ 
+						var str= " "+d.name.substring(d.name.indexOf("ENDNODENUM")+10,d.name.indexOf(" "));
+						str+="("+d.name.substring(d.name.lastIndexOf("(")+9,d.name.lastIndexOf(")")+1)
+						return str;
+						//return d.name.substring(d.name.indexOf("ENDNODENUM")+10,d.name.length);
+					
+					}
+				});
+
+
+				// Transition nodes to their new position.
+				nodeEnter.transition().duration(duration).attr("transform", function(d) {
+					return "translate(" + d.y + "," + d.x + ")";
+				}).style("opacity", 1).select("circle")
+				//.attr("cx", function(d) { return d.x; })
+				//.attr("cy", function(d) { return d.y; })
+				.style("fill", "lightsteelblue");
+
+				// Translates the nodes and colors them based on whether their children are shown
+				var nodeUpdate = node.transition().duration(duration).attr
+				(
+					"transform", function(d) 
+					{
+						return "translate(" + d.y + "," + d.x + ")";
+					}
+				).style("opacity", 1).select("circle").attr("r", 9).style("fill", function(d) {
+					var containedtext = d.name.substring(d.name.indexOf("ENDNODENUM")+10,d.name.length);
+					if (((containedtext.indexOf(searchterm) != -1) && (searchterm != "")) || (satellite_selected == 1 && containedtext.indexOf("Satellite") != -1) || (nucleus_selected == 1 && containedtext.indexOf("Nucleus") != -1))
+					{
+						return "rgb(241, 163, 64)";
+					}
+					else
+					{
+					 return d._children ? "blue" : "lightsteelblue"; 
+					}
+					 });
+				
+				// Makes sub-tree disappear
+				node.exit().transition().duration(duration).attr("transform", function(d) {
+					return "translate(" + source.y + "," + source.x + ")";
+				}).style("opacity", 1e-6).remove();
+				
+
+				
+				
+				
+				
+				/*
+				var nodeTransition = node.transition()
+				.duration(duration);
+
+				nodeTransition.select("circle")
+				.attr("cx", function(d) { return d.y; })
+				.attr("cy", function(d) { return d.x; })
+				.style("fill", function(d) { return d._children ? "lightsteelblue" : "#fff"; });
+
+				nodeTransition.select("text")
+				.attr("dx", function(d) { return d._children ? -8 : 8; })
+				.attr("dy", 3)
+				.style("fill", function(d) { return d._children ? "lightsteelblue" : "#5babfc"; });
+
+				// Transition exiting nodes to the parent's new position.
+				var nodeExit = node.exit();
+
+				nodeExit.select("circle").transition()
+				.duration(duration)
+				.attr("cx", function(d) { return source.y; })
+				.attr("cy", function(d) { return source.x; })
+				.remove();
+
+				nodeExit.select("text").transition()
+				.duration(duration)
+				.remove();
+				*/
+				// Update the links…
+				var link = vis.selectAll("path.link").data(tree.links(nodes), function(d) {
+					return d.target.id;
+				});
+
+				// Enter any new links at the parent's previous position.
+				link.enter().insert("svg:path", "g").attr("class", "link").attr("d", function(d) {
+					var o = {
+						x : source.x0,
+						y : source.y0
+					};
+					return diagonal({
+						source : o,
+						target : o
+					});
+				}).transition().duration(duration).attr("d", diagonal);
+
+				// Transition links to their new position.
+				link.transition().duration(duration).attr("d", diagonal);
+
+				// Transition exiting nodes to the parent's new position.
+				link.exit().transition().duration(duration).attr("d", function(d) {
+					var o = {
+						x : source.x,
+						y : source.y
+					};
+					return diagonal({
+						source : o,
+						target : o
+					});
+				}).remove();
+
+				// Stash the old positions for transition.
+				nodes.forEach(function(d) {
+					d.x0 = d.x;
+					d.y0 = d.y;
+				});
+			}
+
+			// Toggle children on click.
+			function click(d) {
+				if (d.children) {
+					d._children = d.children;
+					d.children = null;
+					$(removeborder(nodenum + 1));
+					$(createborder(d.name.substring(0, d.name.indexOf("ENDNODENUM"))));
+					borderparents(d.name.substring(0, d.name.indexOf("ENDNODENUM")), JSON.parse('['+currentjsonstring+']'));
+				} else {
+					d.children = d._children;
+					d._children = null;
+					$(removeborder(nodenum + 1));
+					$(createborder(d.name.substring(0, d.name.indexOf("ENDNODENUM"))));
+					borderparents(d.name.substring(0, d.name.indexOf("ENDNODENUM")), JSON.parse('['+currentjsonstring+']'));
+				}
+				update(d);
+				if (scrollison)
+				{
+					window.location = "#" + d.name.substring(0, d.name.indexOf("ENDNODENUM"));
+				}
+			}
+
+
+			d3.select(self.frameElement).style("height", "2000px");
+			
+			
+			
+////////////////// FOCUS WINDOW CODE //////////////////
+			
+			var first=1;
+			function parseNodes(nodes) { // takes a nodes array and turns it into a <ol>
+			    var ol = document.createElement("ul");
+				if(first==1)
+				{
+					ol.setAttribute('id','comments');
+				 
+					first=0;
+				}
+				else{
+					ol.setAttribute('class','children');
+				}
+			     for(var i=0; i<nodes.length; i++) {
+			         ol.appendChild(parseNode(nodes[i]));
+			    }	
+			    return ol;
+			}
+			
+			function parseNode(node) { // takes a node object and turns it into a <li>
+			    var li = document.createElement("LI");
+				li.setAttribute('id',index/*node.commentid*/);
+			 
+				/*var text="<div class=\"comment\" "+"id=\"div"+node.commentid+"\" style=\"border:"+"0px;\">"+"<p>"+
+								 node.title+  
+								"</p></div>";*/
+				var text="<div class=\"comment\""+"id=\"div"+index/*node.commentid */
+								+"\" style=\"border:"+"2px;\">"+
+								  					 
+								"<p>"+
+								node.name.substring(node.name.indexOf("ENDNODENUM")+10, node.name.length)+
+								"</p>"+
+								"</div>";	
+								index++;
+				// alert(text);
+			    li.innerHTML = text;
+			     
+			    if(node.children) li.appendChild(parseNodes(node.children));
+			    return li;
+			}
+			
+			function borderparents(nodenum, currentnodes)
+			{
+				//Go through each node in level
+				for (var i = 0; i < currentnodes.length; i++)
+				{
+					// If the sought node has been found among current nodes
+					if (currentnodes[i].name.substring(0, currentnodes[i].name.indexOf("ENDNODENUM")) == nodenum)
+					{
+						// Border the parents by returning a 1 to caller
+						return 1;
+					}
+				}
+				// Otherwise, call recursively on descendants of current nodes (if they have any)
+				for (var j = 0; j < currentnodes.length; j++)
+				{
+					if (currentnodes[j].children)
+					{
+						var result = borderparents(nodenum, currentnodes[j].children);
+						// If this node is a parent of the sought node
+						if (result == 1)
+						{
+							// Border this parent
+							createdottedborder(currentnodes[j].name.substring(0, currentnodes[j].name.indexOf("ENDNODENUM")));
+							// And border all its parents
+							return 1;
+						}
+					}
+				}
+				return 0;
+			}
+
+			function createborder(divnum) {
+				$("#div" + divnum).css("border", "4px solid");	
+			};
+			
+			function createdottedborder(divnum) {
+				$("#div" + divnum).css("border", "4px dotted");	
+			};
+			
+			function removeborder(numdivs) {
+				for (var i = 0; i < numdivs; i++)
+				{
+					$("#div" + i).css("border", "0px solid");	
+				}
+			};
+			
+			//Function to donwload currentjsongstring to text file if needed
+			function download() {
+			var pom = document.createElement('a');
+			pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(currentjsonstring));
+			pom.setAttribute('download', 'jsonString.txt');
+			
+			if (document.createEvent) {
+				var event = document.createEvent('MouseEvents');
+				event.initEvent('click', true, true);
+				pom.dispatchEvent(event);
+			}
+			else {
+				pom.click();
+			}
+			};
+			 
+
+		</script>
+	</body>
+</html>
