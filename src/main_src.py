@@ -56,12 +56,10 @@ def skip_files_processed(outputFolder='Output'):
 
 
 if __name__ == '__main__':
-    # Testing
     print('Args: ' + str(sys.argv))
     print('Abs path: ' + os.path.abspath(sys.argv[0]))
     print('Working dir: ' + os.path.dirname(sys.argv[0]))
     os.chdir(os.path.dirname(sys.argv[0]))
     print('Processing: ' + sys.argv[1])
     run_main_discourse(sys.argv[1])
-    # run_main_discourse('64.txt.xml')
     # loop_folder()
