@@ -2,6 +2,7 @@ import re
 import subprocess
 #from nltk.stem import WordNetLemmatizer
 import nltk
+import codecs
 nltk.data.path.append('Tools/nltk_data/')
 wnl2 = nltk.stem.WordNetLemmatizer()
 
@@ -12,7 +13,7 @@ def computeLexChains(tagfile):
     chfile_in = re.sub("\.tag", ".ch_in", tagfile)
     chfile_out = re.sub("\.ch_in", ".chn", chfile_in)
 
-    [F_R, F_W] = [open(tagfile, 'r'), open(chfile_in, 'w')]
+    [F_R, F_W] = [codecs.open(tagfile, mode='r', encoding='ascii', errors='ignore'), codecs.open(chfile_in, mode='w', encoding='ascii', errors='ignore')]
     senNb = 1
 
     for tagline in F_R:

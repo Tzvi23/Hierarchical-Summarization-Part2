@@ -5,6 +5,7 @@ from Discourse_Parser import do_parse
 import xml.etree.ElementTree as ET
 from print_colors import bcolors
 import re
+import random
 
 
 """
@@ -150,7 +151,7 @@ def run_presentation(filename='17cut'):
 
 # region XML
 # ==== Xml Functions ====
-def read_xml_file(filename, target_dir=os.path.join('Input', 'xml_part1')):
+def read_xml_file(filename, target_dir=os.path.join('Input', 'xml')):
     parsed_dict = dict()
     current_tag = 'non_section'  # base tag
     last_index = -1
@@ -255,8 +256,14 @@ def create_temp_file(xml_parse_result, file_name, base_dir=os.path.join('Input',
 def parse_xml_to_sub_file(file_name):  # Input example: '17.txt.xml'
     parsed_xml = read_xml_file(file_name)
     for key in parsed_xml.keys():
+        rand_limit = random.randrange(5000, 15001, 1000)
         if not parsed_xml[key]:
             del parsed_xml[key]
+        elif len('\n'.join(parsed_xml[key])) > 15000:
+            tmp_text = '\n'.join(parsed_xml[key])
+            tmp_text = tmp_text[:rand_limit]
+            tmp_text = tmp_text.split('\n')
+            parsed_xml[key] = tmp_text[:-1]
     # text = remove_long_sentences(parsed_xml)
     # create_temp_file(text.split('\n'), file_name)
     create_temp_file(parsed_xml, file_name)

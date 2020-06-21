@@ -39,7 +39,7 @@ def preprocess(ts_edufile):
     F_FMT_TS_W = open(ts_fmtfile, 'w')
     
     for sen in F_EDU_TS_R:
-        sen= sen.decode('utf-8').strip()  # added decode('utf-8')
+        sen= sen.decode('utf-8', 'ignore').strip().encode('utf-8', 'ignore')  # added decode('utf-8')
         edus = re.split("\s*EDU_BREAK\s*", sen)
         
         if not edus:

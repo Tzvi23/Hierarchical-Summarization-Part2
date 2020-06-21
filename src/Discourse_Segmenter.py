@@ -23,6 +23,12 @@ def find_index_to_remove(current_text, error_string):
     return -1
 
 
+def convert_line(tmp_Text):
+    for index in range(len(tmp_Text)):
+        tmp_Text[index] = tmp_Text[index].replace('<s>', '').replace('</s>', '').replace(' . ', '.').strip()
+    return tmp_Text
+
+
 def addContextualFeatures(words, wordFeatures, W_F1, W_F2):
     """ adds prev and next contextual features """
 
@@ -82,6 +88,12 @@ def do_preprocess(infile):
     W_F.write(tokenized.strip())
     W_F.close()
 
+    with open('tmp.tok', 'r') as infile_temp:
+        text = infile_temp.read()
+        if len(text.replace('<s>', '').replace('</s>', '').replace('\n', '').replace(' ', '')) > 40000:
+            print(bcolors.FAIL + 'File length too long to process, SKIPPING this file => Length: {0}'.format(len(text)) + bcolors.ENDC)
+            return [-1, -1, -1], False
+
     # syntactic parsing
     with open('errorlog.txt', mode='w') as errorLog:
         CHP = "Tools/CharniakParserRerank/parse.sh"
@@ -98,29 +110,23 @@ def do_preprocess(infile):
             process_error_fault = text[1]
             index_to_remove_error = int(process_error_text[process_error_text.index('sentence') + 1][:-1]) - 1
 
-            with open(infile, mode='r') as inputFile:
-                currentText = inputFile.readlines()
-                # if process_error_fault == '. \n':
-                #     # Extra dot somewhere
-                #     while not currentText[index_to_remove].count('.', len(currentText[index_to_remove]) - 10, len(currentText[index_to_remove]) - 1) >= 2:
-                #         index_to_remove -= 1
-                #     currentText[index_to_remove] = currentText[index_to_remove].replace(' .\n', '\n')
-                #     print(bcolors.WARNING + 'Extra dot case, FIXED! Index:' + str(index_to_remove) + ' Sen fixed:' + currentText[
-                #         index_to_remove] + bcolors.ENDC)
-                # else:
-                index_to_remove = find_index_to_remove(currentText, process_error_fault)
-                if index_to_remove == -1:
-                    index_to_remove = index_to_remove_error
-                print(bcolors.WARNING + 'Sen Removed: ' + currentText[index_to_remove] + 'Error parsing the file:' + infile + ', fixing the problem. Sentence No: ' + str(index_to_remove) + bcolors.ENDC)
-                del currentText[index_to_remove]
+            # with open(infile, mode='r') as inputFile:
+            inputFile = open('tmp.tok', mode='r')
+            currentText = inputFile.readlines()
+            index_to_remove = index_to_remove_error
+            print(bcolors.WARNING + 'Sen Removed: ' + currentText[
+                index_to_remove] + 'Error parsing the file:' + infile + ', fixing the problem. Sentence No: ' + str(
+                index_to_remove) + bcolors.ENDC)
+            del currentText[index_to_remove]
+            inputFile.close()
             with open(infile, mode='w') as inputFile:
-                inputFile.writelines(currentText)
+                new_text = '\n'.join(convert_line(currentText))
+                inputFile.writelines(new_text)
             return ["tmp.tok", "tmp.tag", "tmp.chp"], False
 
     if not ch_parsed:
         print "ERROR IN PARSING .. tmp.tok"
-        return ["tmp.tok", "tmp.tag", "tmp.chp"], False
-        raw_input(' ')
+        return [-2, -2, -2], False
 
     W_F = open("tmp.chp", 'w')
     W_F.write(ch_parsed.strip())
@@ -530,12 +536,16 @@ def do_segment(infile):
     """ this is the main segmentation module """
     complete_flag = False
     try_numbers = 0
-    max_attempts = 15
+    max_attempts = 10
     while not complete_flag:
-        if try_numbers == max_attempts:
-            return False
+        # if try_numbers == max_attempts:
+        #     return False
         print(bcolors.HEADER + 'Segmenter Attempt no: {0}'.format(try_numbers) + bcolors.ENDC)
         [tok_f, tag_f, par_f], complete_flag = do_preprocess(infile)
+        # if not complete_flag and [tok_f, tag_f, par_f] == [-1, -1, -1]:
+        #     return False
+        if [tok_f, tag_f, par_f] == [-2, -2, -2]:
+            return False
         try_numbers += 1
     print (bcolors.OKBLUE + 'Iam not stuck, just extracting features.' + bcolors.ENDC)
     has_one_word = extract_features(tok_f, par_f, tag_f, "tmp.feat", "tmp.words", edufile="tmp.edu")
@@ -552,5 +562,10 @@ def do_segment(infile):
 
 
 if __name__ == "__main__":
+    # infile = '/home/tzvi/PycharmProjects/linuxDiscourse/src/Input/xmlParse/18803/18803_chief_executive_officer_ceo_review.txt'
+    # with open(infile, mode='r') as inputFile:
+    #     currentText = inputFile.readlines()
+    #     error_string = '<s> International Inspection Services Limited Isle of Man Intertek KG Limited Liability Company ii Kyrgyzstan Intertek Mauritius Limited Mauritius Intertek Schweiz AG Switzerland Intertek Academy AS Denmark Intertek Argentina Certificaciones S. Intertek Aruba N. Aruba Intertek Asset Integrity Management Inc . </s>'
+    #     ans = find_index_to_remove(currentText, error_string, 1254)
     do_segment(sys.argv[1])
 #    do_segment("tmp.raw")
